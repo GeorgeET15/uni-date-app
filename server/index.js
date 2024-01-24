@@ -106,7 +106,7 @@ app.get("/gendered-users", async (req, res) => {
     const users = database.collection("users");
 
     const query = { gender_identity: { $eq: gender } };
-    const sortCondition = { _id: 1 }; // -1 for descending order (latest first)
+    const sortCondition = { created_at: 1 }; // 1 for ascending order (oldest first)
     const foundUsers = await users.find(query).sort(sortCondition).toArray();
 
     res.send(foundUsers);

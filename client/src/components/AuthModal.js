@@ -32,9 +32,21 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
       //   return;
       // }
 
+      if (password.length < 7) {
+        throw new Error("Password must be at least 7 characters long.");
+      }
+
+      const hasNumber = /\d/.test(password);
+      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+      if (!hasNumber || !hasSpecialChar) {
+        throw new Error(
+          "Password must include at least one number and one special character."
+        );
+      }
+
       if (isSignUp && password !== confirmPassword) {
-        setError("Passwords need to match!");
-        return;
+        throw new Error("Passwords need to match!");
       }
 
       const response = await axios.post(
@@ -53,7 +65,13 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
 
       window.location.reload();
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 409) {
+        setError("User already exists. Please login.");
+      } else {
+        setError(error.message || "An error occurred during authentication.");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

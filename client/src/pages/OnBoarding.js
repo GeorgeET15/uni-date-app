@@ -3,13 +3,14 @@ import Nav from "../components/Nav";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { Skeleton } from "@mui/material";
+import { Skeleton, Backdrop, CircularProgress } from "@mui/material";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { storage } from "../Firebase";
 
 const OnBoarding = () => {
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const [photoPreview, setPhotoPreview] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     user_id: cookies.UserId,
     first_name: "",
@@ -49,6 +50,7 @@ const OnBoarding = () => {
       console.log(err);
     } finally {
       setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -307,6 +309,15 @@ const OnBoarding = () => {
             </div>
           </section>
         </form>
+        <Backdrop
+          sx={{
+            color: "#fff",
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+          }}
+          open={isSubmitting}
+        >
+          <CircularProgress style={{ color: "#a27ef8" }} />
+        </Backdrop>
       </div>
     </>
   );

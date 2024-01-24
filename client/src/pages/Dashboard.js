@@ -51,7 +51,11 @@ const Dashboard = () => {
           params: { gender: user?.gender_interest },
         }
       );
-      setGenderedUsers(response.data);
+
+      // Reverse the order of the array
+      const reversedUsers = response.data.slice().reverse();
+
+      setGenderedUsers(reversedUsers);
     } catch (error) {
       console.log(error);
     }
@@ -205,7 +209,12 @@ const Dashboard = () => {
                       </DialogContent>
 
                       <DialogActions>
-                        <Button>Close</Button>
+                        <Button
+                          sx={{ color: "#7f4ef6" }}
+                          onClick={handleCloseMilestonesDialog}
+                        >
+                          Close
+                        </Button>
                       </DialogActions>
                     </Dialog>
                     <div
