@@ -28,7 +28,7 @@ const Profile = () => {
   const getUser = async () => {
     try {
       const response = await axios.get(
-        "https://tinder-clone-test-a0p4.onrender.com/user",
+        "https://uni-date-app.onrender.com/user",
         {
           params: { userId },
         }
@@ -54,7 +54,7 @@ const Profile = () => {
   const deleteUser = async () => {
     try {
       const response = await axios.delete(
-        "https://tinder-clone-test-a0p4.onrender.com/delete-user",
+        "https://uni-date-app.onrender.com/delete-user",
         {
           data: { userId }, // Send the userId in the request body
         }

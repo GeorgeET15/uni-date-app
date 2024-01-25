@@ -27,10 +27,10 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      // if (!email.endsWith("@rajagiri.edu.in")) {
-      //   setError("Please use a valid email ending with @rajagiri.edu.in");
-      //   return;
-      // }
+      if (!email.endsWith("@rajagiri.edu.in")) {
+        setError("Please use a valid email ending with @rajagiri.edu.in");
+        return;
+      }
 
       if (password.length < 7) {
         throw new Error("Password must be at least 7 characters long.");
@@ -50,9 +50,7 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
       }
 
       const response = await axios.post(
-        `https://tinder-clone-test-a0p4.onrender.com/${
-          isSignUp ? "signup" : "login"
-        }`,
+        `https://uni-date-app.onrender.com/${isSignUp ? "signup" : "login"}`,
         { email, password }
       );
 

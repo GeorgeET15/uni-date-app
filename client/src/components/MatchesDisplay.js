@@ -28,7 +28,7 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
   const getMatches = async () => {
     try {
       const response = await axios.get(
-        "https://tinder-clone-test-a0p4.onrender.com/users",
+        "https://uni-date-app.onrender.com/users",
         {
           params: { userId: JSON.stringify(matchedUserIds) },
         }
@@ -66,7 +66,7 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
   const handleRemoveClick = async (matchUserId) => {
     try {
       const response = await axios.post(
-        "https://tinder-clone-test-a0p4.onrender.com/remove-match",
+        "https://uni-date-app.onrender.com/remove-match",
         {
           userId,
           matchUserId,

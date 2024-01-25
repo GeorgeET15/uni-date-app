@@ -29,7 +29,7 @@ const ChatInput = ({
 
     try {
       setLoading(true);
-      await axios.post("https://tinder-clone-test-a0p4.onrender.com/message", {
+      await axios.post("https://uni-date-app.onrender.com/message", {
         message,
       });
       getUserMessages();

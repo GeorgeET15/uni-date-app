@@ -14,13 +14,13 @@ const ChatDisplay = ({ user, clickedUser }) => {
   const fetchMessages = async () => {
     try {
       const usersMessagesResponse = await axios.get(
-        "https://tinder-clone-test-a0p4.onrender.com/messages",
+        "https://uni-date-app.onrender.com/messages",
         { params: { userId, correspondingUserId: clickedUserId } }
       );
       setUsersMessages(usersMessagesResponse.data);
 
       const clickedUsersMessagesResponse = await axios.get(
-        "https://tinder-clone-test-a0p4.onrender.com/messages",
+        "https://uni-date-app.onrender.com/messages",
         { params: { userId: clickedUserId, correspondingUserId: userId } }
       );
       setClickedUsersMessages(clickedUsersMessagesResponse.data);

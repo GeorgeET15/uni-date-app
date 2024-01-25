@@ -38,7 +38,7 @@ const OnBoarding = () => {
 
     try {
       const response = await axios.put(
-        "https://tinder-clone-test-a0p4.onrender.com/user",
+        "https://uni-date-app.onrender.com/user",
         {
           formData,
         }
