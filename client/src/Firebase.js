@@ -4,12 +4,12 @@ import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCqnoTCKplQox5Ooz11PsCO1UfkkFXvbqA",
-  authDomain: "unidate-e5155.firebaseapp.com",
-  projectId: "unidate-e5155",
-  storageBucket: "unidate-e5155.appspot.com",
-  messagingSenderId: "341116520447",
-  appId: "1:341116520447:web:c9f2a9eb627845d5fa89ca",
+  apiKey: "AIzaSyBclRv9SxQqh6C93vrSIbnZdqcu-oDwRzo",
+  authDomain: "unidate-7fdf0.firebaseapp.com",
+  projectId: "unidate-7fdf0",
+  storageBucket: "unidate-7fdf0.appspot.com",
+  messagingSenderId: "57797129447",
+  appId: "1:57797129447:web:409701adc2e007810d9e42",
 };
 
 const app = initializeApp(firebaseConfig);
