@@ -273,7 +273,7 @@ const OnBoarding = () => {
             <input type="submit" />
           </section>
 
-          <section>
+          <section style={{ height: "20px" }}>
             <label htmlFor="profile-photo">Profile Photo</label>
             <div className="custom-file-input-container">
               <button

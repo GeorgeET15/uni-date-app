@@ -23,6 +23,7 @@ const Dashboard = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [isChatDrawerOpen, setChatDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadingD, setLoadingD] = useState(false);
   const [isMilestonesDialogOpen, setMilestonesDialogOpen] = useState(false);
 
   const userId = cookies.UserId;
@@ -114,7 +115,14 @@ const Dashboard = () => {
   const isMobile = window.innerWidth <= 768;
 
   const handleOpenMilestonesDialog = () => {
+    // Show circular progress for 2 seconds
     setMilestonesDialogOpen(true);
+    setLoadingD(true);
+
+    setTimeout(() => {
+      // After 2 seconds, set the loading state to false and open the dialog
+      setLoadingD(false);
+    }, 3000);
   };
 
   const handleCloseMilestonesDialog = () => {
@@ -183,29 +191,41 @@ const Dashboard = () => {
                     >
                       <DialogTitle>More Info</DialogTitle>
                       <DialogContent>
-                        <>
-                          <Typography variant="h5" sx={{ marginBottom: 2 }}>
-                            {genderedUser?.first_name +
-                              " " +
-                              genderedUser?.last_name}
-                          </Typography>
-
-                          <Typography variant="body1" gutterBottom>
-                            Gender: {genderedUser?.gender_identity}
-                          </Typography>
-                          <Typography variant="body1" gutterBottom>
-                            Age: {2024 - genderedUser?.dob_year}
-                          </Typography>
-                          <Typography variant="body1" gutterBottom>
-                            Branch: {genderedUser?.branch}
-                          </Typography>
-                          <Typography variant="body1" gutterBottom>
-                            Year: {genderedUser?.current_year}
-                          </Typography>
-                          <Typography variant="body1" gutterBottom>
-                            About: {genderedUser?.about}
-                          </Typography>
-                        </>
+                        {loadingD ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100px", // Adjust the height as needed
+                            }}
+                          >
+                            <CircularProgress style={{ color: "#a27ef8" }} />
+                          </div>
+                        ) : (
+                          <>
+                            <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                              {genderedUser?.first_name +
+                                " " +
+                                genderedUser?.last_name}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                              Gender: {genderedUser?.gender_identity}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                              Age: {2024 - genderedUser?.dob_year}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                              Branch: {genderedUser?.branch}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                              Year: {genderedUser?.current_year}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                              About: {genderedUser?.about}
+                            </Typography>
+                          </>
+                        )}
                       </DialogContent>
 
                       <DialogActions>
