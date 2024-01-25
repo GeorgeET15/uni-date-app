@@ -67,6 +67,8 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setError("User already exists. Please login.");
+      } else if (error.response && error.response.status === 400) {
+        setError("Invalid Credentials.");
       } else {
         setError(error.message || "An error occurred during authentication.");
       }

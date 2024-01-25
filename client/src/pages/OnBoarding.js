@@ -309,15 +309,17 @@ const OnBoarding = () => {
             </div>
           </section>
         </form>
-        <Backdrop
-          sx={{
-            color: "#fff",
-            zIndex: (theme) => theme.zIndex.drawer + 1,
-          }}
-          open={isSubmitting}
-        >
-          <CircularProgress style={{ color: "#a27ef8" }} />
-        </Backdrop>
+        {isSubmitting && (
+          <Backdrop
+            sx={{
+              color: "#ffff", // Custom color for the Backdrop
+              zIndex: (theme) => theme.zIndex.drawer + 1,
+            }}
+            open={isSubmitting}
+          >
+            <CircularProgress style={{ color: "#a27ef8" }} />{" "}
+          </Backdrop>
+        )}
       </div>
     </>
   );
