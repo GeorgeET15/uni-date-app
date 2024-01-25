@@ -188,6 +188,11 @@ const Dashboard = () => {
                     <Dialog
                       open={isMilestonesDialogOpen}
                       onClose={handleCloseMilestonesDialog}
+                      BackdropProps={{
+                        style: {
+                          backgroundColor: "rgba(0, 0, 0, 0)", // Completely transparent
+                        },
+                      }}
                     >
                       <DialogTitle>More Info</DialogTitle>
                       <DialogContent>
