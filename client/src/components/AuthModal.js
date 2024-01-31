@@ -87,11 +87,11 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
       <p style={{ color: "#a27ef8" }}>
         By clicking Log In, you agree to our terms. Learn how we process your
         data in our{" "}
-        <a style={{ color: "" }} href="https://www.github.com">
+        <a style={{ color: "" }} href="privacypolicy">
           Privacy Policy
         </a>{" "}
         and{" "}
-        <a style={{ color: "" }} href="https://www.github.com">
+        <a style={{ color: "" }} href="cookiepolicy">
           Cookie Policy
         </a>
         .

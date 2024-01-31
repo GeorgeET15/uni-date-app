@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import OnBoarding from "./pages/OnBoarding";
 import Profile from "./pages/Profile";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CookiePolicy from "./pages/CookiePolicy";
 
 const App = () => {
   const [cookies] = useCookies(["AuthToken"]);
@@ -25,6 +27,8 @@ const App = () => {
         {authToken && <Route path="/dashboard" element={<Dashboard />} />}
         {authToken && <Route path="/onboarding" element={<OnBoarding />} />}
         {authToken && <Route path="/profile" element={<Profile />} />}
+        <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+        <Route path="/cookiepolicy" element={<CookiePolicy />} />
       </Routes>
     </BrowserRouter>
   );
