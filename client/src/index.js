@@ -2,10 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import CountdownTimer from "./components/CountdownTimer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+
+        height: "100vh",
+      }}
+    >
+      <CountdownTimer />
+    </div>
   </React.StrictMode>
 );
