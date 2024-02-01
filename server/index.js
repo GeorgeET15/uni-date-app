@@ -141,18 +141,33 @@ app.post("/login", async (req, res) => {
     const database = client.db("app-data");
     const users = database.collection("users");
     const user = await users.findOne({ email });
-    const correctPassword = await bcrypt.compare(
-      password,
-      user.hashed_password
-    );
 
-    if (user && correctPassword) {
-      const token = jwt.sign(user, email, { expiresIn: 60 * 24 });
-      res.status(201).json({ token, userId: user.user_id });
+    if (user) {
+      const correctPassword = await bcrypt.compare(
+        password,
+        user.hashed_password
+      );
+
+      if (correctPassword) {
+        const token = jwt.sign(user, email, { expiresIn: 60 * 24 });
+        return res
+          .status(201)
+          .json({ success: true, token, userId: user.user_id });
+      }
     }
-    res.status(400).send("Invalid Credentials");
+
+    // Move this line outside of the try block
+    return res
+      .status(400)
+      .json({ success: false, error: "Invalid Credentials" });
   } catch (error) {
     console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, error: "An error occurred during login." });
+  } finally {
+    // Make sure to close the database connection in the finally block
+    await client.close();
   }
 });
 

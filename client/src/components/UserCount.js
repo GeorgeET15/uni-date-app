@@ -1,6 +1,9 @@
 import React from "react";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const UserCount = ({ totalUsers }) => {
+  const navigate = useNavigate();
   const styles = `
     @property --rotate {
       syntax: "<angle>";
@@ -115,6 +118,10 @@ const UserCount = ({ totalUsers }) => {
 
   // Append the style element to the document's head
   document.head.appendChild(styleElement);
+
+  const navigateToProfile = () => {
+    navigate("/profile");
+  };
 
   return (
     <div className="card">

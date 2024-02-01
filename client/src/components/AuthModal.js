@@ -92,13 +92,15 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
         `https://uni-date-app.onrender.com/${isSignUp ? "signup" : "login"}`,
         { email, password }
       );
-
+      console.log("Login API Response:", response);
       if (isSignUp) {
         setOpenVerificationDialog(true);
       } else {
+        // Move the login logic outside of the 'else' block
         if (response.data.success) {
           setCookie("AuthToken", response.data.token);
           setCookie("UserId", response.data.userId);
+          console.log(cookies);
 
           const success = response.status === 201;
           if (success) navigate("/dashboard");
