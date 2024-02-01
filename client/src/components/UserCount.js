@@ -31,7 +31,7 @@ const UserCount = ({ totalUsers }) => {
     .card {
       background: #191c29;
       width: var(--card-width);
-      height: 580px;
+      height: 550px;
       padding: 3px;
       position: relative;
       border-radius: 6px;
@@ -187,7 +187,7 @@ const UserCount = ({ totalUsers }) => {
       <Button
         onClick={navigateToProfile}
         variant="outlined"
-        sx={{ color: "#5c1df4" }}
+        sx={{ color: "#5c1df4", marginBottom: "30px" }}
       >
         Profile
       </Button>
