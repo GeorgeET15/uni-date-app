@@ -78,8 +78,17 @@ app.post("/signup", async (req, res) => {
     const mailOptions = {
       from: "UniDate2024@gmail.com",
       to: sanitizedEmail,
-      subject: "UniDate Email Verification",
-      text: `Your verification code is: ${verificationCode}`,
+      subject: "UniDate Account Verification",
+      text: `Hello,
+    
+    Thank you for signing up with UniDate! To verify your email address and activate your account, please enter the following verification code:
+    
+    Verification Code: ${verificationCode}
+    
+    If you did not sign up for UniDate, please ignore this email.
+    
+    Best regards,
+    UniDate Team`,
     };
 
     await transporter.sendMail(mailOptions);

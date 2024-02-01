@@ -4,6 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
 
 const AuthModal = ({ setShowModal, isSignUp }) => {
   const [email, setEmail] = useState(null);
@@ -13,6 +18,7 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
   const [error, setError] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openVerificationDialog, setOpenVerificationDialog] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,16 +30,43 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
     setVerificationCode(e.target.value);
   };
 
+  const handleVerificationDialogClose = () => {
+    setOpenVerificationDialog(false);
+  };
+
+  const handleVerificationDialogSubmit = async () => {
+    try {
+      const response = await axios.post(
+        `https://uni-date-app.onrender.com/verify`,
+        { email, verificationCode }
+      );
+
+      if (response.data.success) {
+        setCookie("AuthToken", response.data.token);
+        setCookie("UserId", response.data.userId);
+
+        const success = response.status === 201;
+        if (success && isSignUp) navigate("/onboarding");
+        if (success && !isSignUp) navigate("/dashboard");
+
+        window.location.reload();
+      } else {
+        setError("Verification failed. Please check the code and try again.");
+      }
+    } catch (error) {
+      setError("An error occurred during verification.");
+    } finally {
+      setOpenVerificationDialog(false);
+      setIsSubmitting(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      if (
-        !email.endsWith("@rajagiri.edu.in") ||
-        !email.startsWith("u") ||
-        !email.startsWith("U")
-      ) {
+      if (!email.endsWith("@rajagiri.edu.in")) {
         setError("Please use a valid RSET email id");
         return;
       }
@@ -57,22 +90,25 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
 
       const response = await axios.post(
         `https://uni-date-app.onrender.com/${isSignUp ? "signup" : "login"}`,
-        { email, password, verificationCode }
+        { email, password }
       );
 
-      if (response.data.success) {
-        setCookie("AuthToken", response.data.token);
-        setCookie("UserId", response.data.userId);
-
-        const success = response.status === 201;
-        if (success && isSignUp) navigate("/onboarding");
-        if (success && !isSignUp) navigate("/dashboard");
-
-        window.location.reload();
+      if (isSignUp) {
+        setOpenVerificationDialog(true);
       } else {
-        setError(
-          response.data.error || "An error occurred during authentication."
-        );
+        if (response.data.success) {
+          setCookie("AuthToken", response.data.token);
+          setCookie("UserId", response.data.userId);
+
+          const success = response.status === 201;
+          if (success) navigate("/dashboard");
+
+          window.location.reload();
+        } else {
+          setError(
+            response.data.error || "An error occurred during authentication."
+          );
+        }
       }
     } catch (error) {
       setError(error.message || "An error occurred during authentication.");
@@ -129,14 +165,6 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
               required={true}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <input
-              type="email"
-              id="verification-code"
-              name="verification-code"
-              placeholder="verification code"
-              required={true}
-              onChange={handleVerificationCodeChange}
-            />
           </>
         )}
         <div>
@@ -160,6 +188,26 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
         </div>
         <p>{error}</p>
       </form>
+
+      <Dialog
+        open={openVerificationDialog}
+        onClose={handleVerificationDialogClose}
+      >
+        <DialogTitle>Enter Verification Code</DialogTitle>
+        <DialogContent>
+          <input
+            type="text"
+            id="verification-code"
+            name="verification-code"
+            placeholder="Enter verification code"
+            onChange={handleVerificationCodeChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleVerificationDialogClose}>Cancel</Button>
+          <Button onClick={handleVerificationDialogSubmit}>Submit</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
