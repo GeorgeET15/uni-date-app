@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const uri = process.env.URI;
 const app = express();
+const nodemailer = require("nodemailer");
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "https://unidate.vercel.app/");
@@ -50,18 +51,84 @@ app.post("/signup", async (req, res) => {
 
     const sanitizedEmail = email.toLowerCase();
 
+    // Generate a unique verification token
+    const verificationToken = uuidv4();
+
     const data = {
       user_id: generatedUserId,
       email: sanitizedEmail,
       hashed_password: hashedPassword,
+      verification_token: verificationToken,
     };
 
     const insertedUser = await users.insertOne(data);
+
+    // Send a verification email
+    sendVerificationEmail(sanitizedEmail, verificationToken);
 
     const token = jwt.sign(insertedUser, sanitizedEmail, {
       expiresIn: 60 * 24,
     });
     res.status(201).json({ token, userId: generatedUserId });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+});
+
+// Function to send a verification email
+function sendVerificationEmail(email, token) {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "UniDate2024@gmail.com", // Your Gmail email address
+      pass: "UniDateForever@2024", // Your Gmail password
+    },
+  });
+
+  const verificationLink = `https://uni-date-app.onrender.com/verify-email?email=${email}&token=${token}`;
+
+  const mailOptions = {
+    from: "UniDate2024@gmail.com",
+    to: email,
+    subject: "Email Verification",
+    text: `Click the following link to verify your email: ${verificationLink}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+}
+
+app.get("/verify-email", async (req, res) => {
+  const client = new MongoClient(uri);
+  const { email, token } = req.query;
+
+  try {
+    await client.connect();
+    const database = client.db("app-data");
+    const users = database.collection("users");
+
+    const query = { email, verification_token: token };
+    const user = await users.findOne(query);
+
+    if (user) {
+      // Check if the user is not already verified
+      if (!user.verified) {
+        // Mark the user as verified in the database
+        await users.updateOne(query, { $set: { verified: true } });
+        return res.send("Email verified successfully. You can now login.");
+      } else {
+        return res.send("Email is already verified. You can proceed to login.");
+      }
+    }
+
+    res.status(400).send("Invalid verification token or email.");
   } catch (err) {
     console.log(err);
   } finally {
