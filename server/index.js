@@ -98,7 +98,7 @@ function sendVerificationEmail(email, token) {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log(error);
+      console.log("Error sending email:", error);
     } else {
       console.log("Email sent: " + info.response);
     }
