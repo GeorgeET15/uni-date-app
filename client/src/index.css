@@ -171,6 +171,11 @@ nav .nav-button:disabled {
   background-color: #a27ef8;
 }
 
+.onboarding input[type="submit"] {
+  background-color: #a27ef8;
+  color: white;
+}
+
 .onboarding form label {
   margin: 10px 0;
 }
@@ -207,7 +212,7 @@ nav .nav-button:disabled {
 }
 
 .onboarding form input[type="radio"]:checked + label {
-  border: solid 2px #dd2716; /* Updated color */
+  border: solid 2px #a27ef8; /* Updated color */
 }
 
 .onboarding form input[type="submit"]:hover {
@@ -215,7 +220,7 @@ nav .nav-button:disabled {
 }
 
 .onboarding form input[type="submit"]:active {
-  background-color: #e27373; /* Updated color */
+  background-color: #a7fde0; /* Updated color */
 }
 
 .onboarding form .photo-container img {

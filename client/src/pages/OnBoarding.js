@@ -21,8 +21,8 @@ const OnBoarding = () => {
     dob_month: "",
     dob_year: "",
     show_gender: false,
-    gender_identity: "man",
-    gender_interest: "woman",
+    gender_identity: "",
+    gender_interest: "",
     url: "",
     about: "",
     matches: [],
@@ -285,6 +285,7 @@ const OnBoarding = () => {
               </button>
               <input
                 type="file"
+                required={true}
                 accept="image/*"
                 onChange={handleImageUpload}
                 id="fileInput"

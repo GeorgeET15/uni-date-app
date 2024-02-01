@@ -193,19 +193,36 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
         open={openVerificationDialog}
         onClose={handleVerificationDialogClose}
       >
-        <DialogTitle>Enter Verification Code</DialogTitle>
+        <DialogTitle sx={{ color: "#a27ef8" }}>
+          Account Verification
+        </DialogTitle>
         <DialogContent>
+          <p>Please enter the verification code sent to your email.</p>
           <input
             type="text"
             id="verification-code"
             name="verification-code"
-            placeholder="Enter verification code"
+            placeholder="Enter Verification Code"
             onChange={handleVerificationCodeChange}
+            style={{
+              padding: "8px",
+              margin: "8px",
+              fontSize: "17px",
+            }}
           />
         </DialogContent>
+
         <DialogActions>
-          <Button onClick={handleVerificationDialogClose}>Cancel</Button>
-          <Button onClick={handleVerificationDialogSubmit}>Submit</Button>
+          <Button variant="outlined" onClick={handleVerificationDialogClose}>
+            Cancel
+          </Button>
+          <Button
+            sx={{ color: "#5c1df4" }}
+            variant="outlined"
+            onClick={handleVerificationDialogSubmit}
+          >
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -25,6 +25,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [loadingD, setLoadingD] = useState(false);
   const [isMilestonesDialogOpen, setMilestonesDialogOpen] = useState(false);
+  const [totalUsers, setTotalUsers] = useState(0);
 
   const userId = cookies.UserId;
 
@@ -128,6 +129,27 @@ const Dashboard = () => {
   const handleCloseMilestonesDialog = () => {
     setMilestonesDialogOpen(false);
   };
+
+  useEffect(() => {
+    const fetchTotalUsers = async () => {
+      try {
+        const response = await fetch(
+          "https://uni-date-app.onrender.com/total-registered-users"
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          setTotalUsers(data.totalRegisteredUsers);
+        } else {
+          console.error("Error fetching total registered users:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching total registered users:", error.message);
+      }
+    };
+
+    fetchTotalUsers();
+  }, []);
 
   return (
     <>
