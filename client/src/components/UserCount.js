@@ -1,6 +1,10 @@
 import React from "react";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const UserCount = ({ totalUsers }) => {
+  const navigate = useNavigate();
+
   const styles = `
     @property --rotate {
       syntax: "<angle>";
@@ -109,6 +113,10 @@ const UserCount = ({ totalUsers }) => {
     }
   `;
 
+  const navigateToProfile = () => {
+    navigate("/profile");
+  };
+
   // Create a style element and set its content to the styles
   const styleElement = document.createElement("style");
   styleElement.textContent = styles;
@@ -177,6 +185,13 @@ const UserCount = ({ totalUsers }) => {
           <span style={{ color: "#ffac41" }}>{totalUsers}</span> 🌟
         </h2>
       </div>
+      <Button
+        onClick={navigateToProfile}
+        variant="outlined"
+        sx={{ color: "#5c1df4" }}
+      >
+        Profile
+      </Button>
     </div>
   );
 };
