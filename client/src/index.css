@@ -547,4 +547,53 @@ textarea {
   outline: none;
 }
 
-/* Add more styling based on your preferences */
+/*-------- Creator --------*/
+.mysterious-creator {
+  text-align: center;
+  margin: 20px;
+  padding: 30px;
+  background-color: #292b37; /* Dark purple */
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  color: #6c5ce7; /* Purple */
+  font-size: 32px;
+}
+
+p {
+  color: #ffffff;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.hidden-message {
+  cursor: pointer;
+  background-color: #4834d4; /* Dark purple-blue */
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.hidden-message:hover {
+  background-color: #686de0; /* Lighter purple-blue */
+}
+
+.secret-message {
+  color: #ffac41; /* Yellow */
+  font-size: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

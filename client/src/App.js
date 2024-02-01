@@ -7,6 +7,7 @@ import OnBoarding from "./pages/OnBoarding";
 import Profile from "./pages/Profile";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
+import Creator from "./pages/Creator";
 
 const App = () => {
   const [cookies] = useCookies(["AuthToken"]);
@@ -29,6 +30,7 @@ const App = () => {
         {authToken && <Route path="/profile" element={<Profile />} />}
         <Route path="/privacypolicy" element={<PrivacyPolicy />} />
         <Route path="/cookiepolicy" element={<CookiePolicy />} />
+        <Route path="/creator" element={<Creator />} />
       </Routes>
     </BrowserRouter>
   );
