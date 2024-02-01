@@ -6,13 +6,24 @@ const Creator = () => {
   const [confetti, setConfetti] = useState(false);
 
   const revealSecretMessage = () => {
+    // Create an audio element
+    const audio = new Audio(
+      "https://gnonbgjivjlnzejovgaw.supabase.co/storage/v1/object/sign/Images/midnight%20city%20m83.mp3?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJJbWFnZXMvbWlkbmlnaHQgY2l0eSBtODMubXAzIiwiaWF0IjoxNzA2ODIzNTMzLCJleHAiOjIwMjIxODM1MzN9.L1A3GW8D_qFKnWTDUFnHgYvUcxpPWaZ9b13kc9ycPPw&t=2024-02-01T21%3A38%3A54.287Z"
+    );
+
+    // Play the audio
+    audio.play();
+
+    // Set revealSecret and confetti state
     setRevealSecret(true);
     setConfetti(true);
 
-    // Reset confetti after a short delay
+    // Reset confetti and pause audio after a short delay
     setTimeout(() => {
       setConfetti(false);
-    }, 3000);
+      setRevealSecret(false);
+      audio.pause();
+    }, 13000);
   };
 
   // Styles
