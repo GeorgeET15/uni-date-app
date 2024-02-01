@@ -290,6 +290,18 @@ const Dashboard = () => {
   // );
   return (
     <>
+      {loading && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress style={{ color: "#a27ef8" }} />
+        </div>
+      )}
       {!loading && user && (
         <>
           <UserCount totalUsers={totalUsers} />
