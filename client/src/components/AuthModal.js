@@ -1,34 +1,40 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const img = "../images/bw.png";
-
 const AuthModal = ({ setShowModal, isSignUp }) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [verificationCode, setVerificationCode] = useState(null);
   const [error, setError] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  let navigate = useNavigate();
-
-  console.log(email, password, confirmPassword);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setShowModal(false);
   };
 
+  const handleVerificationCodeChange = (e) => {
+    setVerificationCode(e.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
     try {
-      if (!email.endsWith("@rajagiri.edu.in")) {
-        setError("Please use a valid email ending with @rajagiri.edu.in");
+      if (
+        !email.endsWith("@rajagiri.edu.in") ||
+        !email.startsWith("u") ||
+        !email.startsWith("U")
+      ) {
+        setError("Please use a valid RSET email id");
         return;
       }
 
@@ -51,25 +57,25 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
 
       const response = await axios.post(
         `https://uni-date-app.onrender.com/${isSignUp ? "signup" : "login"}`,
-        { email, password }
+        { email, password, verificationCode }
       );
 
-      setCookie("AuthToken", response.data.token);
-      setCookie("UserId", response.data.userId);
+      if (response.data.success) {
+        setCookie("AuthToken", response.data.token);
+        setCookie("UserId", response.data.userId);
 
-      const success = response.status === 201;
-      if (success && isSignUp) navigate("/onboarding");
-      if (success && !isSignUp) navigate("/dashboard");
+        const success = response.status === 201;
+        if (success && isSignUp) navigate("/onboarding");
+        if (success && !isSignUp) navigate("/dashboard");
 
-      window.location.reload();
-    } catch (error) {
-      if (error.response && error.response.status === 409) {
-        setError("User already exists. Please login.");
-      } else if (error.response && error.response.status === 400) {
-        setError("Invalid Credentials.");
+        window.location.reload();
       } else {
-        setError(error.message || "An error occurred during authentication.");
+        setError(
+          response.data.error || "An error occurred during authentication."
+        );
       }
+    } catch (error) {
+      setError(error.message || "An error occurred during authentication.");
     } finally {
       setIsSubmitting(false);
     }
@@ -114,14 +120,24 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
           onChange={(e) => setPassword(e.target.value)}
         />
         {isSignUp && (
-          <input
-            type="password"
-            id="password-check"
-            name="password-check"
-            placeholder="confirm password"
-            required={true}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <>
+            <input
+              type="password"
+              id="password-check"
+              name="password-check"
+              placeholder="confirm password"
+              required={true}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <input
+              type="email"
+              id="verification-code"
+              name="verification-code"
+              placeholder="verification code"
+              required={true}
+              onChange={handleVerificationCodeChange}
+            />
+          </>
         )}
         <div>
           <input
@@ -147,4 +163,5 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
     </div>
   );
 };
+
 export default AuthModal;

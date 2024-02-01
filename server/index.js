@@ -9,6 +9,14 @@ const uri = process.env.URI;
 const app = express();
 const nodemailer = require("nodemailer");
 
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "UniDate2024@gmail.com", // Your Gmail email address
+    pass: "foni kxsn bzbh dyxk",
+  },
+});
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "https://unidate.vercel.app/");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
@@ -32,7 +40,6 @@ app.get("/", (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  const client = new MongoClient(uri);
   const { email, password } = req.body;
 
   const generatedUserId = uuidv4();
@@ -50,26 +57,34 @@ app.post("/signup", async (req, res) => {
     }
 
     const sanitizedEmail = email.toLowerCase();
-
-    // Generate a unique verification token
-    const verificationToken = uuidv4();
+    const verificationCode = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
 
     const data = {
       user_id: generatedUserId,
       email: sanitizedEmail,
       hashed_password: hashedPassword,
-      verification_token: verificationToken,
+      verification_code: verificationCode,
     };
 
     const insertedUser = await users.insertOne(data);
 
-    // Send a verification email
-    sendVerificationEmail(sanitizedEmail, verificationToken);
-
     const token = jwt.sign(insertedUser, sanitizedEmail, {
       expiresIn: 60 * 24,
     });
-    res.status(201).json({ token, userId: generatedUserId });
+
+    // Send verification email
+    const mailOptions = {
+      from: "UniDate2024@gmail.com",
+      to: sanitizedEmail,
+      subject: "UniDate Email Verification",
+      text: `Your verification code is: ${verificationCode}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(201).json({ token, userId: generatedUserId, verificationCode });
   } catch (err) {
     console.log(err);
   } finally {
@@ -77,60 +92,32 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// Function to send a verification email
-function sendVerificationEmail(email, token) {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "UniDate2024@gmail.com", // Your Gmail email address
-      pass: "UniDateForever@2024", // Your Gmail password
-    },
-  });
-
-  const verificationLink = `https://uni-date-app.onrender.com/verify-email?email=${email}&token=${token}`;
-
-  const mailOptions = {
-    from: "UniDate2024@gmail.com",
-    to: email,
-    subject: "Email Verification",
-    text: `Click the following link to verify your email: ${verificationLink}`,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log("Error sending email:", error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
-}
-
-app.get("/verify-email", async (req, res) => {
-  const client = new MongoClient(uri);
-  const { email, token } = req.query;
+app.post("/verify", async (req, res) => {
+  const { email, verificationCode } = req.body;
 
   try {
     await client.connect();
     const database = client.db("app-data");
     const users = database.collection("users");
 
-    const query = { email, verification_token: token };
-    const user = await users.findOne(query);
+    const user = await users.findOne({
+      email,
+      verification_code: verificationCode,
+    });
 
     if (user) {
-      // Check if the user is not already verified
-      if (!user.verified) {
-        // Mark the user as verified in the database
-        await users.updateOne(query, { $set: { verified: true } });
-        return res.send("Email verified successfully. You can now login.");
-      } else {
-        return res.send("Email is already verified. You can proceed to login.");
-      }
-    }
+      await users.updateOne({ email }, { $unset: { verification_code: "" } });
 
-    res.status(400).send("Invalid verification token or email.");
-  } catch (err) {
-    console.log(err);
+      const token = jwt.sign(user, email, { expiresIn: 60 * 24 });
+      res.status(201).json({ success: true, token, userId: user.user_id });
+    } else {
+      res
+        .status(400)
+        .json({ success: false, error: "Invalid verification code" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   } finally {
     await client.close();
   }
