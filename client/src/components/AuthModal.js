@@ -64,6 +64,7 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
     try {
       if (!email.endsWith("@rajagiri.edu.in")) {
         setError("Please use a valid RSET email id");
@@ -84,8 +85,7 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
       }
 
       if (isSignUp && password !== confirmPassword) {
-        setError("Passwords need to match!");
-        return;
+        throw new Error("Passwords need to match!");
       }
 
       const response = await axios.post(
@@ -93,16 +93,27 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
         { email, password }
       );
 
-      setCookie("AuthToken", response.data.token);
-      setCookie("UserId", response.data.userId);
+      if (isSignUp) {
+        setOpenVerificationDialog(true);
+      } else {
+        if (response.data.success) {
+          setCookie("AuthToken", response.data.token);
+          setCookie("UserId", response.data.userId);
 
-      const success = response.status === 201;
-      if (success && isSignUp) navigate("/onboarding");
-      if (success && !isSignUp) navigate("/dashboard");
+          const success = response.status === 201;
+          if (success) navigate("/dashboard");
 
-      window.location.reload();
+          window.location.reload();
+        } else {
+          setError(
+            response.data.error || "An error occurred during authentication."
+          );
+        }
+      }
     } catch (error) {
-      console.log(error);
+      setError(error.message || "An error occurred during authentication.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

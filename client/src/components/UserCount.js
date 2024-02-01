@@ -1,10 +1,6 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
 
 const UserCount = ({ totalUsers }) => {
-  const navigate = useNavigate();
-
   const styles = `
     @property --rotate {
       syntax: "<angle>";
@@ -113,10 +109,6 @@ const UserCount = ({ totalUsers }) => {
     }
   `;
 
-  const navigateToProfile = () => {
-    navigate("/profile");
-  };
-
   // Create a style element and set its content to the styles
   const styleElement = document.createElement("style");
   styleElement.textContent = styles;
@@ -125,74 +117,74 @@ const UserCount = ({ totalUsers }) => {
   document.head.appendChild(styleElement);
 
   return (
-    <>
-      <div className="card">
-        <div
+    <div className="card">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%",
+          padding: "20px",
+        }}
+      >
+        <h2
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100%",
-            padding: "20px",
+            color: "#5c1df4",
+            marginBottom: "20px",
+            fontSize: "25px",
+            fontWeight: "bold",
+            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
           }}
         >
-          <h2
-            style={{
-              color: "#5c1df4",
-              marginBottom: "20px",
-              fontSize: "25px",
-              fontWeight: "bold",
-              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-            }}
-          >
-            Welcome to UniVerse!
-          </h2>
-          <p
-            style={{
-              textAlign: "center",
-              marginBottom: "20px",
-              fontSize: "16px",
-            }}
-          >
-            Thank you for joining UniVerse! Swipe cards will activate once we
-            reach a minimum of 50 registered users. We appreciate your patience
-            and look forward to enhancing your UniVerse experience.
-          </p>
-          <p
-            style={{
-              textAlign: "center",
-              color: "#58c7fa",
-              fontWeight: "bold",
-              fontSize: "18px",
-            }}
-          >
-            Spread the word! Let your friends know about UniVerse and help us
-            grow our community. 🌐
-          </p>
-          <h2
-            style={{
-              color: "#5c1df4",
-              marginBottom: "20px",
-              fontSize: "25px", // Increase font size
-              fontWeight: "bold",
-              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-              paddingBottom: "10px", // Add some space below the heading
-            }}
-          >
-            Total Registered Users:{" "}
-            <span style={{ color: "#ffac41" }}>{totalUsers}</span> 🌟
-          </h2>
-          <Button
-            onClick={navigateToProfile}
-            variant="outlined"
-            sx={{ color: "#5c1df4" }}
-          >
-            Profile
-          </Button>
-        </div>
+          Welcome to UniVerse!
+        </h2>
+
+        <p
+          style={{
+            textAlign: "center",
+            marginBottom: "20px",
+            fontSize: "16px",
+          }}
+        >
+          Thank you for joining UniVerse! Swipe cards will activate once we
+          reach a minimum of 50 registered users. We appreciate your patience
+          and look forward to enhancing your UniVerse experience.
+        </p>
+
+        <p
+          style={{
+            textAlign: "center",
+            color: "#58c7fa",
+            fontWeight: "bold",
+            fontSize: "18px",
+          }}
+        >
+          Spread the word! Let your friends know about UniVerse and help us grow
+          our community. 🌐
+        </p>
+        <h2
+          style={{
+            color: "#5c1df4",
+            marginBottom: "20px",
+            fontSize: "25px", // Increase font size
+            fontWeight: "bold",
+            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+            paddingBottom: "10px", // Add some space below the heading
+          }}
+        >
+          Total Registered Users:{" "}
+          <span style={{ color: "#ffac41" }}>{totalUsers}</span> 🌟
+        </h2>
       </div>
-    </>
+      <Button
+        onClick={navigateToProfile}
+        variant="outlined"
+        sx={{ color: "#5c1df4" }}
+      >
+        Profile
+      </Button>
+    </div>
   );
 };
 
