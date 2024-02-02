@@ -188,7 +188,9 @@ const Creator = () => {
         </div>
       )}
       <h1>The Mysterious Creator</h1>
-      <p>Unveiling the enigmatic mind behind UniVerse...</p>
+      <p style={{ color: "white", fontSize: "18px", marginBottom: "20px" }}>
+        Unveiling the enigmatic mind behind UniVerse...
+      </p>
       <div
         className={`hidden-message ${revealSecret ? "hidden" : ""}`}
         onClick={revealSecretMessage}

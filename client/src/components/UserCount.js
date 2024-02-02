@@ -121,6 +121,7 @@ const UserCount = ({ totalUsers }) => {
 
   const navigateToProfile = () => {
     navigate("/profile");
+    window.location.reload();
   };
 
   return (
