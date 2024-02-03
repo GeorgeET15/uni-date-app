@@ -26,10 +26,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [loadingD, setLoadingD] = useState(false);
   const [isMilestonesDialogOpen, setMilestonesDialogOpen] = useState(false);
-  const [totalUsers, setTotalUsers] = useState({
-    totalMaleUsers: 0,
-    totalFemaleUsers: 0,
-  });
+  const [totalUsers, setTotalUsers] = useState(0);
 
   const userId = cookies.UserId;
 
@@ -143,13 +140,8 @@ const Dashboard = () => {
         const data = await response.json();
 
         if (response.ok) {
-          setTotalUsers({
-            totalMaleUsers: data.totalMaleUsers,
-            totalFemaleUsers: data.totalFemaleUsers,
-          });
-          console.log("API Response:", data);
-          console.log("Total Male Users:", data.totalMaleUsers);
-          console.log("Total Female Users:", data.totalFemaleUsers);
+          setTotalUsers(data.totalRegisteredUsers);
+          console.log(totalUsers);
         } else {
           console.error("Error fetching total registered users:", data.error);
         }
