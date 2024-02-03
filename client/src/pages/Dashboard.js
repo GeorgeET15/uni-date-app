@@ -141,7 +141,6 @@ const Dashboard = () => {
 
         if (response.ok) {
           setTotalUsers(data.totalRegisteredUsers);
-          console.log(totalUsers);
         } else {
           console.error("Error fetching total registered users:", data.error);
         }
@@ -305,10 +304,7 @@ const Dashboard = () => {
       )}
       {!loading && user && (
         <>
-          {/* <UserCount
-            totalMaleUsers={totalUsers.totalMaleUsers}
-            totalFemaleUsers={totalUsers.totalFemaleUsers}
-          /> */}
+          <UserCount totalUsers={totalUsers} />
         </>
       )}
     </>
