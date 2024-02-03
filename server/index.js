@@ -403,9 +403,10 @@ app.get("/total-registered-users", async (req, res) => {
     const database = client.db("app-data");
     const users = database.collection("users");
 
-    const totalRegisteredUsers = await users.countDocuments();
+    const totalMaleUsers = await users.countDocuments({ gender: "male" });
+    const totalFemaleUsers = await users.countDocuments({ gender: "female" });
 
-    res.json({ totalRegisteredUsers });
+    res.json({ totalMaleUsers, totalFemaleUsers });
   } catch (error) {
     console.error("Error retrieving total registered users:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
