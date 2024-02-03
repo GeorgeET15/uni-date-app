@@ -403,8 +403,12 @@ app.get("/total-registered-users", async (req, res) => {
     const database = client.db("app-data");
     const users = database.collection("users");
 
-    const totalMaleUsers = await users.countDocuments({ gender: "male" });
-    const totalFemaleUsers = await users.countDocuments({ gender: "female" });
+    const totalMaleUsers = await users.countDocuments({
+      gender_identity: "male",
+    });
+    const totalFemaleUsers = await users.countDocuments({
+      gender_identity: "female",
+    });
 
     res.json({ totalMaleUsers, totalFemaleUsers });
   } catch (error) {
