@@ -414,6 +414,7 @@ app.get("/total-registered-users", async (req, res) => {
 
     // Log each gender identity
     genderIdentities.forEach((user) => {
+      console.log("Gender:", genderIdentities);
       if (user.gender_identity === "man") {
         maleUsers++;
       } else if (user.gender_identity === "woman") {
