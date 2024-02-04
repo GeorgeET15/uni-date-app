@@ -395,8 +395,6 @@ app.delete("/delete-user", async (req, res) => {
   }
 });
 
-const { MongoClient } = require("mongodb");
-
 app.get("/total-registered-users", async (req, res) => {
   const client = new MongoClient(uri);
   try {
