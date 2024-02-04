@@ -27,8 +27,8 @@ const Dashboard = () => {
   const [loadingD, setLoadingD] = useState(false);
   const [isMilestonesDialogOpen, setMilestonesDialogOpen] = useState(false);
   const [totalUsers, setTotalUsers] = useState(0);
-  const [totalMaleUsers, setTotalMaleUsers] = useState(0);
-  const [totalFemaleUsers, setTotalFemaleUsers] = useState(0);
+  const [maleUsers, setMaleUsers] = useState(0);
+  const [femaleUsers, setFemaleUsers] = useState(0);
 
   const userId = cookies.UserId;
 
@@ -142,8 +142,9 @@ const Dashboard = () => {
         const data = await response.json();
 
         if (response.ok) {
-          setTotalMaleUsers(data.totalMaleUsers);
-          setTotalFemaleUsers(data.totalFemaleUsers);
+          setTotalUsers(data.totalRegisteredUsers);
+          setMaleUsers(data.maleUsers);
+          setFemaleUsers(data.femaleUsers);
         } else {
           console.error("Error fetching total registered users:", data.error);
         }
@@ -307,7 +308,7 @@ const Dashboard = () => {
       )}
       {!loading && user && (
         <>
-          <UserCount />
+          <UserCount totalUsers={totalUsers} />
         </>
       )}
     </>

@@ -395,24 +395,38 @@ app.delete("/delete-user", async (req, res) => {
   }
 });
 
+const { MongoClient } = require("mongodb");
+
 app.get("/total-registered-users", async (req, res) => {
   const client = new MongoClient(uri);
-
   try {
     await client.connect();
     const database = client.db("app-data");
     const users = database.collection("users");
 
-    const totalMaleUsers = await users.countDocuments({
-      gender_identity: "male",
-    });
-    const totalFemaleUsers = await users.countDocuments({
-      gender_identity: "female",
+    // Fetch total registered users
+    const totalRegisteredUsers = await users.countDocuments();
+    let maleUser = 0;
+    let femaleUser = 0;
+
+    // Fetch gender identities
+    const genderIdentities = await users
+      .find({}, { projection: { _id: 0, gender_identity: 1 } })
+      .toArray();
+
+    // Log each gender identity
+    genderIdentities.forEach((user) => {
+      console.log("Gender Identity:", user.gender_identity);
+      if (user.gender_identity === "male") {
+        maleUser++;
+      } else if (user.gender_identity === "female") {
+        femaleUser++;
+      }
     });
 
-    res.json({ totalMaleUsers, totalFemaleUsers });
+    res.json({ totalRegisteredUsers, maleUser, femaleUser });
   } catch (error) {
-    console.error("Error retrieving total registered users:", error);
+    console.error("Error retrieving data:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   } finally {
     await client.close();
