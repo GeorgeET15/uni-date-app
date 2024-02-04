@@ -175,7 +175,7 @@ const UserCount = ({ totalUsers, maleUsers, femaleUsers }) => {
           style={{
             color: "#5c1df4",
             marginBottom: "10px",
-            fontSize: "20px",
+            fontSize: "18px",
             fontWeight: "bold",
             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
             paddingBottom: "5px",
@@ -185,9 +185,12 @@ const UserCount = ({ totalUsers, maleUsers, femaleUsers }) => {
           Total Registered Users:{" "}
           <span style={{ color: "#ffac41" }}>{totalUsers}</span> 🌟
           <br />
-          Male Users: <span style={{ color: "#ffac41" }}>{maleUsers}</span>
+          Male Users: <span style={{ color: "#ffac41" }}>{maleUsers}</span> 🕺
           <br />
-          Female Users: <span style={{ color: "#ffac41" }}>{femaleUsers}</span>
+          Female Users: <span style={{ color: "#ffac41" }}>
+            {femaleUsers}
+          </span>{" "}
+          💃
         </h2>
       </div>
       <Button
