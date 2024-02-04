@@ -7,15 +7,15 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const uri = process.env.URI;
 const app = express();
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "UniDate2024@gmail.com", // Your Gmail email address
-    pass: "foni kxsn bzbh dyxk",
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: "UniDate2024@gmail.com", // Your Gmail email address
+//     pass: "foni kxsn bzbh dyxk",
+//   },
+// });
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "https://unidate.vercel.app/");
@@ -39,6 +39,99 @@ app.get("/", (req, res) => {
   res.json("Hello to my app");
 });
 
+// app.post("/signup", async (req, res) => {
+//   const { email, password } = req.body;
+
+//   const generatedUserId = uuidv4();
+//   const hashedPassword = await bcrypt.hash(password, 10);
+
+//   try {
+//     await client.connect();
+//     const database = client.db("app-data");
+//     const users = database.collection("users");
+
+//     const existingUser = await users.findOne({ email });
+
+//     if (existingUser) {
+//       return res.status(409).send("User already exists. Please login");
+//     }
+
+//     const sanitizedEmail = email.toLowerCase();
+//     const verificationCode = Math.floor(
+//       100000 + Math.random() * 900000
+//     ).toString();
+
+//     const data = {
+//       user_id: generatedUserId,
+//       email: sanitizedEmail,
+//       hashed_password: hashedPassword,
+//       verification_code: verificationCode,
+//     };
+
+//     const insertedUser = await users.insertOne(data);
+
+//     const token = jwt.sign(insertedUser, sanitizedEmail, {
+//       expiresIn: 60 * 24,
+//     });
+
+//     // Send verification email
+//     const mailOptions = {
+//       from: "UniDate2024@gmail.com",
+//       to: sanitizedEmail,
+//       subject: "UniDate Account Verification",
+//       text: `Hello,
+
+//     Thank you for signing up with UniDate! To verify your email address and activate your account, please enter the following verification code:
+
+//     Verification Code: ${verificationCode}
+
+//     If you did not sign up for UniDate, please ignore this email.
+
+//     Best regards,
+//     UniDate Team`,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+
+//     res.status(201).json({ token, userId: generatedUserId, verificationCode });
+//   } catch (err) {
+//     console.log(err);
+//   } finally {
+//     await client.close();
+//   }
+// });
+
+// app.post("/verify", async (req, res) => {
+//   const { email, verificationCode } = req.body;
+
+//   try {
+//     await client.connect();
+//     const database = client.db("app-data");
+//     const users = database.collection("users");
+
+//     const user = await users.findOne({
+//       email,
+//       verification_code: verificationCode,
+//     });
+
+//     if (user) {
+//       await users.updateOne({ email }, { $unset: { verification_code: "" } });
+
+//       const token = jwt.sign(user, email, { expiresIn: 60 * 24 });
+//       res.status(201).json({ success: true, token, userId: user.user_id });
+//     } else {
+//       res
+//         .status(400)
+//         .json({ success: false, error: "Invalid verification code" });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, error: "Internal Server Error" });
+//   } finally {
+//     await client.close();
+//   }
+// });
+
 app.post("/signup", async (req, res) => {
   const { email, password } = req.body;
 
@@ -57,15 +150,11 @@ app.post("/signup", async (req, res) => {
     }
 
     const sanitizedEmail = email.toLowerCase();
-    const verificationCode = Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
 
     const data = {
       user_id: generatedUserId,
       email: sanitizedEmail,
       hashed_password: hashedPassword,
-      verification_code: verificationCode,
     };
 
     const insertedUser = await users.insertOne(data);
@@ -74,59 +163,9 @@ app.post("/signup", async (req, res) => {
       expiresIn: 60 * 24,
     });
 
-    // Send verification email
-    const mailOptions = {
-      from: "UniDate2024@gmail.com",
-      to: sanitizedEmail,
-      subject: "UniDate Account Verification",
-      text: `Hello,
-    
-    Thank you for signing up with UniDate! To verify your email address and activate your account, please enter the following verification code:
-    
-    Verification Code: ${verificationCode}
-    
-    If you did not sign up for UniDate, please ignore this email.
-    
-    Best regards,
-    UniDate Team`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    res.status(201).json({ token, userId: generatedUserId, verificationCode });
+    res.status(201).json({ token, userId: generatedUserId });
   } catch (err) {
     console.log(err);
-  } finally {
-    await client.close();
-  }
-});
-
-app.post("/verify", async (req, res) => {
-  const { email, verificationCode } = req.body;
-
-  try {
-    await client.connect();
-    const database = client.db("app-data");
-    const users = database.collection("users");
-
-    const user = await users.findOne({
-      email,
-      verification_code: verificationCode,
-    });
-
-    if (user) {
-      await users.updateOne({ email }, { $unset: { verification_code: "" } });
-
-      const token = jwt.sign(user, email, { expiresIn: 60 * 24 });
-      res.status(201).json({ success: true, token, userId: user.user_id });
-    } else {
-      res
-        .status(400)
-        .json({ success: false, error: "Invalid verification code" });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
   } finally {
     await client.close();
   }
