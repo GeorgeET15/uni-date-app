@@ -414,14 +414,13 @@ app.get("/total-registered-users", async (req, res) => {
 
     // Log each gender identity
     genderIdentities.forEach((user) => {
-      console.log("Gender:", genderIdentities);
       if (user.gender_identity === "man") {
         maleUsers++;
       } else if (user.gender_identity === "woman") {
         femaleUsers++;
       }
     });
-    res.json({ totalRegisteredUsers, maleUser, femaleUser });
+    res.json({ totalRegisteredUsers, maleUsers, femaleUsers });
   } catch (error) {
     console.error("Error retrieving data:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
