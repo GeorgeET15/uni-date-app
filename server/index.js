@@ -420,6 +420,8 @@ app.get("/total-registered-users", async (req, res) => {
       } else if (user.gender_identity === "woman") {
         femaleUser++;
       }
+      console.log("Male Users:", maleUser);
+      console.log("Female Users:", femaleUser);
     });
 
     res.json({ totalRegisteredUsers, maleUser, femaleUser });
