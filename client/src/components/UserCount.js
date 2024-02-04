@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-const UserCount = ({ totalUsers }) => {
+const UserCount = ({ totalUsers, maleUsers, femaleUsers }) => {
   const navigate = useNavigate();
   const styles = `
     @property --rotate {
@@ -174,15 +174,20 @@ const UserCount = ({ totalUsers }) => {
         <h2
           style={{
             color: "#5c1df4",
-            marginBottom: "20px",
-            fontSize: "25px",
+            marginBottom: "10px",
+            fontSize: "20px",
             fontWeight: "bold",
             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-            paddingBottom: "10px",
+            paddingBottom: "5px",
+            textAlign: "center", // Center the text on mobile
           }}
         >
           Total Registered Users:{" "}
           <span style={{ color: "#ffac41" }}>{totalUsers}</span> 🌟
+          <br />
+          Male Users: <span style={{ color: "#ffac41" }}>{maleUsers}</span>
+          <br />
+          Female Users: <span style={{ color: "#ffac41" }}>{femaleUsers}</span>
         </h2>
       </div>
       <Button

@@ -404,8 +404,8 @@ app.get("/total-registered-users", async (req, res) => {
 
     // Fetch total registered users
     const totalRegisteredUsers = await users.countDocuments();
-    let maleUser = 0;
-    let femaleUser = 0;
+    let maleUsers = 0;
+    let femaleUsers = 0;
 
     // Fetch gender identities
     const genderIdentities = await users
@@ -414,15 +414,12 @@ app.get("/total-registered-users", async (req, res) => {
 
     // Log each gender identity
     genderIdentities.forEach((user) => {
-      console.log("Gender Identity:", user.gender_identity);
       if (user.gender_identity === "man") {
-        maleUser++;
+        maleUsers++;
       } else if (user.gender_identity === "woman") {
-        femaleUser++;
+        femaleUsers++;
       }
     });
-    console.log("Male Users:", maleUser);
-    console.log("Female Users:", femaleUser);
     res.json({ totalRegisteredUsers, maleUser, femaleUser });
   } catch (error) {
     console.error("Error retrieving data:", error);
