@@ -145,6 +145,7 @@ const Dashboard = () => {
           setTotalUsers(data.totalRegisteredUsers);
           setMaleUsers(data.maleUsers);
           setFemaleUsers(data.femaleUsers);
+          console.log(maleUsers);
         } else {
           console.error("Error fetching total registered users:", data.error);
         }
