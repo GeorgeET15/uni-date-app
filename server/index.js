@@ -397,14 +397,20 @@ app.delete("/delete-user", async (req, res) => {
 
 app.get("/total-registered-users", async (req, res) => {
   const client = new MongoClient(uri);
+
   try {
     await client.connect();
     const database = client.db("app-data");
     const users = database.collection("users");
 
-    const totalRegisteredUsers = await users.countDocuments();
+    const totalMaleUsers = await users.countDocuments({
+      gender_identity: "male",
+    });
+    const totalFemaleUsers = await users.countDocuments({
+      gender_identity: "female",
+    });
 
-    res.json({ totalRegisteredUsers });
+    res.json({ totalMaleUsers, totalFemaleUsers });
   } catch (error) {
     console.error("Error retrieving total registered users:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
