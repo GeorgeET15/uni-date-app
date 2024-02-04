@@ -53,9 +53,7 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
       }
 
       const response = await axios.post(
-        `https://tinder-clone-test-a0p4.onrender.com/${
-          isSignUp ? "signup" : "login"
-        }`,
+        `https://uni-date-app.onrender.com/${isSignUp ? "signup" : "login"}`,
         { email, password }
       );
 
