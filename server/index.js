@@ -135,13 +135,17 @@ app.get("/", (req, res) => {
 app.post("/signup", async (req, res) => {
   const client = new MongoClient(uri);
   const { email, password } = req.body;
+
   const generatedUserId = uuidv4();
   const hashedPassword = await bcrypt.hash(password, 10);
+
   try {
     await client.connect();
     const database = client.db("app-data");
     const users = database.collection("users");
+
     const existingUser = await users.findOne({ email });
+
     if (existingUser) {
       return res.status(409).send("User already exists. Please login");
     }

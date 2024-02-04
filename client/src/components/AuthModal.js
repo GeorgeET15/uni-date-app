@@ -48,32 +48,27 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
       }
 
       if (isSignUp && password !== confirmPassword) {
-        throw new Error("Passwords need to match!");
+        setError("Passwords need to match!");
+        return;
       }
 
       const response = await axios.post(
-        `https://uni-date-app.onrender.com/${isSignUp ? "signup" : "login"}`,
+        `https://tinder-clone-test-a0p4.onrender.com/${
+          isSignUp ? "signup" : "login"
+        }`,
         { email, password }
       );
 
-      if (response.data.success) {
-        setCookie("AuthToken", response.data.token);
-        setCookie("UserId", response.data.userId);
+      setCookie("AuthToken", response.data.token);
+      setCookie("UserId", response.data.userId);
 
-        const success = response.status === 201;
-        if (success && isSignUp) navigate("/onboarding");
-        if (success && !isSignUp) navigate("/dashboard");
+      const success = response.status === 201;
+      if (success && isSignUp) navigate("/onboarding");
+      if (success && !isSignUp) navigate("/dashboard");
 
-        window.location.reload();
-      } else {
-        setError(
-          response.data.error || "An error occurred during authentication."
-        );
-      }
+      window.location.reload();
     } catch (error) {
-      setError(error.message || "An error occurred during authentication.");
-    } finally {
-      setIsSubmitting(false);
+      console.log(error);
     }
   };
 
