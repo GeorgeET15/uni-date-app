@@ -472,7 +472,7 @@ app.get("/total-registered-users", async (req, res) => {
 // Schedule a cron job to send a request to your server every 5 minutes (adjust as needed)
 cron.schedule("*/13 * * * *", () => {
   axios
-    .get("YOUR_SERVER_URL")
+    .get("https://uni-date-app.onrender.com")
     .then((response) => {
       console.log("Keep-alive request sent:", response.status);
     })
