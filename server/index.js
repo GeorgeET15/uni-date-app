@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const uri = process.env.URI;
 const app = express();
+const cron = require("node-cron");
 // const nodemailer = require("nodemailer");
 
 // const transporter = nodemailer.createTransport({
@@ -466,6 +467,18 @@ app.get("/total-registered-users", async (req, res) => {
   } finally {
     await client.close();
   }
+});
+
+// Schedule a cron job to send a request to your server every 5 minutes (adjust as needed)
+cron.schedule("*/13 * * * *", () => {
+  axios
+    .get("YOUR_SERVER_URL")
+    .then((response) => {
+      console.log("Keep-alive request sent:", response.status);
+    })
+    .catch((error) => {
+      console.error("Error sending keep-alive request:", error.message);
+    });
 });
 
 app.listen(PORT, () => console.log("Server running on PORT " + PORT));
