@@ -157,167 +157,145 @@ const Dashboard = () => {
     fetchTotalUsers();
   }, []);
 
-  // return (
-  //   <>
-  //     {loading && (
-  //       <div
-  //         style={{
-  //           display: "flex",
-  //           justifyContent: "center",
-  //           alignItems: "center",
-  //           height: "100vh",
-  //         }}
-  //       >
-  //         <CircularProgress style={{ color: "#a27ef8" }} />
-  //       </div>
-  //     )}
 
-  //     {!loading && user && (
-  //       <div className="dashboard">
-  //         {isMobile ? (
-  //           <>
-  //             <div className="show-info-button">
-  //               <InfoIcon onClick={handleOpenMilestonesDialog} />
-  //             </div>
-  //             <button
-  //               className="show-matches-button"
-  //               onClick={toggleChatDrawer}
-  //             >
-  //               Show Matches
-  //             </button>
-  //             <Drawer
-  //               anchor="bottom"
-  //               open={isChatDrawerOpen}
-  //               onClose={toggleChatDrawer}
-  //               PaperProps={{
-  //                 style: {
-  //                   width: "100%",
-  //                   height: "100%",
-  //                 },
-  //               }}
-  //             >
-  //               <ChatContainer user={user} onCloseDrawer={toggleChatDrawer} />
-  //             </Drawer>
-  //           </>
-  //         ) : (
-  //           <ChatContainer user={user} />
-  //         )}
 
-  //         <div className="swipe-container">
-  //           <div className="card-container">
-  //             {filteredGenderedUsers && filteredGenderedUsers.length > 0 ? (
-  //               filteredGenderedUsers.map((genderedUser) => (
-  //                 <TinderCard
-  //                   className="swipe"
-  //                   key={genderedUser.user_id}
-  //                   onSwipe={(dir) => swiped(dir, genderedUser.user_id)}
-  //                   onCardLeftScreen={() => outOfFrame(genderedUser.first_name)}
-  //                 >
-  //                   <Dialog
-  //                     open={isMilestonesDialogOpen}
-  //                     onClose={handleCloseMilestonesDialog}
-  //                     BackdropProps={{
-  //                       style: {
-  //                         backgroundColor: "rgba(0, 0, 0, 0)", // Completely transparent
-  //                       },
-  //                     }}
-  //                   >
-  //                     <DialogTitle>More Info</DialogTitle>
-  //                     <DialogContent>
-  //                       {loadingD ? (
-  //                         <div
-  //                           style={{
-  //                             display: "flex",
-  //                             justifyContent: "center",
-  //                             alignItems: "center",
-  //                             height: "100px", // Adjust the height as needed
-  //                           }}
-  //                         >
-  //                           <CircularProgress style={{ color: "#a27ef8" }} />
-  //                         </div>
-  //                       ) : (
-  //                         <>
-  //                           <Typography variant="h5" sx={{ marginBottom: 2 }}>
-  //                             {genderedUser?.first_name +
-  //                               " " +
-  //                               genderedUser?.last_name}
-  //                           </Typography>
-  //                           <Typography variant="body1" gutterBottom>
-  //                             Gender: {genderedUser?.gender_identity}
-  //                           </Typography>
-  //                           <Typography variant="body1" gutterBottom>
-  //                             Age: {2024 - genderedUser?.dob_year}
-  //                           </Typography>
-  //                           <Typography variant="body1" gutterBottom>
-  //                             Branch: {genderedUser?.branch}
-  //                           </Typography>
-  //                           <Typography variant="body1" gutterBottom>
-  //                             Year: {genderedUser?.current_year}
-  //                           </Typography>
-  //                           <Typography variant="body1" gutterBottom>
-  //                             About: {genderedUser?.about}
-  //                           </Typography>
-  //                         </>
-  //                       )}
-  //                     </DialogContent>
-
-  //                     <DialogActions>
-  //                       <Button
-  //                         sx={{ color: "#7f4ef6" }}
-  //                         onClick={handleCloseMilestonesDialog}
-  //                       >
-  //                         Close
-  //                       </Button>
-  //                     </DialogActions>
-  //                   </Dialog>
-  //                   <div
-  //                     style={{ backgroundImage: `url(${genderedUser.url})` }}
-  //                     className="card"
-  //                   >
-  //                     <h3>
-  //                       {genderedUser.first_name},{" "}
-  //                       {2024 - genderedUser.dob_year}
-  //                     </h3>
-  //                   </div>
-  //                 </TinderCard>
-  //               ))
-  //             ) : (
-  //               <div className="no-cards-message">
-  //                 <img src={colorImage} alt="image" />
-  //                 <p>No more cards to display</p>
-  //               </div>
-  //             )}
-  //           </div>
-  //         </div>
-  //       </div>
-  //     )}
-  //   </>
-  // );
   return (
-    <>
-      {loading && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <CircularProgress style={{ color: "#a27ef8" }} />
+  <>
+    {loading && (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress style={{ color: "#a27ef8" }} />
+      </div>
+    )}
+
+    {!loading && user && (
+      <div className="dashboard">
+        {isMobile ? (
+          <>
+            <div className="show-info-button">
+              <InfoIcon onClick={handleOpenMilestonesDialog} />
+            </div>
+            <button
+              className="show-matches-button"
+              onClick={toggleChatDrawer}
+            >
+              Show Matches
+            </button>
+            <Drawer
+              anchor="bottom"
+              open={isChatDrawerOpen}
+              onClose={toggleChatDrawer}
+              PaperProps={{
+                style: {
+                  width: "100%",
+                  height: "100%",
+                },
+              }}
+            >
+              <ChatContainer user={user} onCloseDrawer={toggleChatDrawer} />
+            </Drawer>
+          </>
+        ) : (
+          <ChatContainer user={user} />
+        )}
+
+        <div className="swipe-container">
+          <div className="card-container">
+            {filteredGenderedUsers && filteredGenderedUsers.length > 0 ? (
+              filteredGenderedUsers.map((genderedUser) => (
+                <TinderCard
+                  className="swipe"
+                  key={genderedUser.user_id}
+                  onSwipe={(dir) => swiped(dir, genderedUser.user_id)}
+                  onCardLeftScreen={() => outOfFrame(genderedUser.first_name)}
+                >
+                  <Dialog
+                    open={isMilestonesDialogOpen}
+                    onClose={handleCloseMilestonesDialog}
+                    BackdropProps={{
+                      style: {
+                        backgroundColor: "rgba(0, 0, 0, 0)", // Completely transparent
+                      },
+                    }}
+                  >
+                    <DialogTitle>More Info</DialogTitle>
+                    <DialogContent>
+                      {loadingD ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100px", // Adjust the height as needed
+                          }}
+                        >
+                          <CircularProgress style={{ color: "#a27ef8" }} />
+                        </div>
+                      ) : (
+                        <>
+                          <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                            {genderedUser?.first_name +
+                              " " +
+                              genderedUser?.last_name}
+                          </Typography>
+                          <Typography variant="body1" gutterBottom>
+                            Gender: {genderedUser?.gender_identity}
+                          </Typography>
+                          <Typography variant="body1" gutterBottom>
+                            Age: {2024 - genderedUser?.dob_year}
+                          </Typography>
+                          <Typography variant="body1" gutterBottom>
+                            Branch: {genderedUser?.branch}
+                          </Typography>
+                          <Typography variant="body1" gutterBottom>
+                            Year: {genderedUser?.current_year}
+                          </Typography>
+                          <Typography variant="body1" gutterBottom>
+                            About: {genderedUser?.about}
+                          </Typography>
+                        </>
+                      )}
+                    </DialogContent>
+
+                    <DialogActions>
+                      <Button
+                        sx={{ color: "#7f4ef6" }}
+                        onClick={handleCloseMilestonesDialog}
+                      >
+                        Close
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <div
+                    style={{ backgroundImage: `url(${genderedUser.url})` }}
+                    className="card"
+                  >
+                    <h3>
+                      {genderedUser.first_name},{" "}
+                      {2024 - genderedUser.dob_year}
+                    </h3>
+                  </div>
+                </TinderCard>
+              ))
+            ) : (
+              <div className="no-cards-message">
+                <img src={colorImage} alt="image" />
+                <p>No more cards to display</p>
+              </div>
+            )}
+          </div>
         </div>
-      )}
-      {!loading && user && (
-        <>
-          <UserCount
-            totalUsers={totalUsers}
-            maleUsers={maleUsers}
-            femaleUsers={femaleUsers}
-          />
-        </>
-      )}
-    </>
-  );
-};
+      </div>
+    )}
+  </>
+)
+
+
 
 export default Dashboard;
